@@ -1,0 +1,16 @@
+---
+- name: Starting of the play
+  hosts: all
+  vars:
+    file_name: 
+      - test.txt
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Creating file on server
+      shell: |
+        dd if=/dev/zero of=/root/{{ item }} bs=1M count=500
+        ls -lrth /root/
+        tar -zcvf /root/{{ item }}.tar.gz /root/{{ item }}
+        ls -lrth /root/
+      loop: "{{ file_name }}"
